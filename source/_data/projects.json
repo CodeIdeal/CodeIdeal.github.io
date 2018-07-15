@@ -1,0 +1,12 @@
+[
+    {
+       "name":"flask blog",
+       "url":"http://github.com/codeideal/flask_blog",
+       "desc":"A fast, simple & powerful blog framework"
+    },
+    {
+       "name":"Font Awesome",
+       "url":"http://fontawesome.io/",
+       "desc":"The iconic font and CSS toolkit"
+    }
+]
