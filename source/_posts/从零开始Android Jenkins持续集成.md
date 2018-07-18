@@ -1,5 +1,5 @@
 title: 从零开始Android Jenkins持续集成
-date: 2018-03-15 20:02:24
+date: 2017-06-15 12:20:42
 ---
 # 从零开始用Jenkins做Android开发CI系统
 

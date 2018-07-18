@@ -150,7 +150,7 @@ Advice: 在切入点注入的代码，一般有 before、after、around 三种�
 Pointcuts 可以定义在由`@Aspect`注解注释的class中定义，由 org.aspectj.lang.annotation.Pointcut 注解修饰的方法声明，方法返回值除 Around 的 Advice 外只能是 void。@Pointcut 修饰的方法只能由空的方法实现而且不能有 throws 语句，方法的参数和 pointcut 中绑定的参数相对应。
 
 eg:
-```
+```java
 @Aspect
 public class AspectJ{
     @Before("execution(void android.view.View.OnClickListener+.onClick(..))  && args(view)")
