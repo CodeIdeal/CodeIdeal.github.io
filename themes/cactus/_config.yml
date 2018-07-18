@@ -109,6 +109,15 @@ open_graph:
 # Plugins
 ##############################################################################
 
+# Donate
+donate:
+  github: https://github.com/codeideal
+  paypal: https://www.paypal.me/Codeideal
+  bitcoin: There is no bitcoin wallet yet.
+  BTCQR: https://i.ooxx.ooo/2018/07/18/5d91e9892cecfcf56bfca5e9d399e7bc.png
+  AliPayQR: https://i.ooxx.ooo/2018/07/18/67e67665f64367d782dfe5a95101779f.png
+  WeChatQR: https://i.ooxx.ooo/2018/07/18/262a0f87e93bbb37276ed72a5dece671.png
+
 # Fill in your Disqus Comments Shortname to enable Disqus comments.
 disqus: 
   enabled: true
