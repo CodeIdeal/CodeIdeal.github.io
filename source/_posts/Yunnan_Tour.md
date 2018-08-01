@@ -193,6 +193,8 @@ cityimage全程提供
 ### 主要事项
 开始环洱海自驾游  
 参考攻略
+- [环洱海攻略1](http://www.mafengwo.cn/gonglve/ziyouxing/40417.html)
+- [环洱海景点](http://www.mafengwo.cn/gonglve/ziyouxing/43708.html)
 - [旅拍的心得](https://bbs.qyer.com/thread-2916200-1.html)
 - [拍照姿势引导](https://www.weibo.com/ttarticle/p/show?id=2309404077522944927020)
 
