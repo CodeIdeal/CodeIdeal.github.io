@@ -55,7 +55,7 @@ message: 你的生日 （如1月1日为0101）：
 ### 住宿
 - CityImage提供的一晚 格再·见山度假别院[**点击查看点评详情**](http://www.dianping.com/shop/98912706)
 	- 在古城和大理市中间，三塔专线公交到古城47分钟，到大理车站43分钟，
-	- 院子里养了好大一只龟😂
+	- 院子里养了好大一只龟😂  
 ![](http://qcloud.dpfile.com/pc/FuC9AODkbt5XM5ih3twEP8tzk8bT7GhrChCLnPrhRUI4o8adQVW20GjZZOVcw59VTYGVDmosZWTLal1WbWRW3A.jpg)
 
 ### 吃吃吃
@@ -119,6 +119,35 @@ cityimage全程提供
 	- 靠城边，出城比较方便
 	- 旁边有个狮子山
 	- 有包车接机服务80一辆  
-![](https://dimg12.c-ctrip.com/images/230i0u000000irz936420_W_550_412.jpg)
+![](http://ci.xiaohongshu.com/df71a866-4457-4ff8-bd4c-2e07b7701759@r_750w_750h_ss1.jpg)
 ![](https://dimg10.c-ctrip.com/images/230h0t000000ie1g1512D_W_550_412.jpg)
 ![](https://dimg10.c-ctrip.com/images/23020t000000ikdlt86CF_W_550_412.jpg)
+
+## 21号行程
+
+### 主要事项
+在丽江周围游玩，暂定玉龙雪山、蓝月谷(好像人太多的话就不好玩了，排队上下山很花时间，看情况可换其它)、束河古城
+
+### 交通
+主要为公交、大巴。尽量买带有来回大巴的套票比如：[官方套票](https://i.meituan.com/awp/h5/lvyou/deal/ticket/detail/index.html?dealId=42536650&appName=dp_m&source=dp&_rdt=1)
+
+### 住宿
+继续住前一晚的客栈
+
+### 吃吃吃
+
+### 玩玩玩
+
+## 22号行程
+待定
+
+## 23号行程
+
+### 主要事项
+环洱海自驾？把大理拍婚纱照没去过的景点刷一遍
+
+### 住宿
+- 古城里，(晚上活动比较方便，饭馆很多，还可以逛逛古城里的特色小店)
+- 大理市中心洱海公园附近
+- 双廊或挖色(交通不方便)
+
