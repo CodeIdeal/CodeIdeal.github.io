@@ -2,7 +2,6 @@
 title: Android Fundamentals V2 Learn points
 date: 2018-09-28 19:39:49
 ---
-# Android Fundamentals V2 Learn points
 
 There are some notable  knowledge point which been found when I reviewed the Fundamentals.
 
