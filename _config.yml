@@ -98,7 +98,7 @@ encrypt:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/CodeIdeal/CodeIdeal.github.io.git
+  repo: git@github.com:CodeIdeal/CodeIdeal.github.io.git
   branch: master
   message: "blog update: {{ now('YYYY-MM-DD HH:mm:ss') }}"
 
