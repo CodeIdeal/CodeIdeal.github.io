@@ -15,7 +15,7 @@ install: # 在安装项目环境阶段需要运行的命令，一条一行，类
   # 全局安装 Hexo 命令行工具，因为我们是命令行操作
   - npm install -g hexo-cli
   # 替换带github token的仓库地址
-  - sed -i'' "s~git@github.com:~https://${GIT_REPO_TOKEN}@github.com/~" _config.yml
+  - sed -i 's/git@github.com:/https://${GIT_REPO_TOKEN}@github.com/g' _config.yml
   # 安装 package.json 中的依赖
   - npm install
 
