@@ -26,7 +26,7 @@ There are two situations :
   1.  The App is on, click notification
   2.  The App is off, click notification
 
-In situations 1, we click back in the WebActivity, we don't need rebuild the back stack and directly jump to HomeActivity.
+In situations 1, we click back in the WebActivi ty, we don't need rebuild the back stack and directly jump to HomeActivity.
 
 In situations 2, we need to rebuild the back stack to go back to the HomeActivity
 
