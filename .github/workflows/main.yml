@@ -1,0 +1,35 @@
+name: Hexo Deploy
+on:
+  push:
+    branches:
+      - deploy
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '19.6.0'
+
+      - name: Set timezone
+        run: sudo timedatectl set-timezone Asia/Shanghai
+
+      - name: Install dependencies
+        run: |
+          yarn global add hexo-cli
+          yarn global add hexo-deployer-git
+          yarn install
+
+      - name: Build and deploy
+        run: |
+          hexo clean
+          hexo generate
+          git config --global user.name 'John Doe'
+          git config --global user.email 'foo@bar.com'
+          sed -i "/^ *repo/s~github\.com~${{ secrets.GITHUB_TOKEN }}@github.com~" _config.yml
+          hexo deploy
