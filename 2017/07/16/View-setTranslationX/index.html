@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="属性动画简单源码解析在Android Reference中的定义  Sets the vertical&#x2F;horizontal location of this view relative to its top&#x2F;left position. This effectively positions the object post-layout, in addition to wher">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从View#setTranslationX&#x2F;Y到自定义属性动画">
+<meta property="og:url" content="http://codeideal.com/2017/07/16/View-setTranslationX/index.html">
+<meta property="og:site_name" content="CodeIdeal">
+<meta property="og:description" content="属性动画简单源码解析在Android Reference中的定义  Sets the vertical&#x2F;horizontal location of this view relative to its top&#x2F;left position. This effectively positions the object post-layout, in addition to wher">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.ooxx.ooo/2018/07/17/1e5ccc40b38d25c14e9106e4a2f23ddd.gif">
+<meta property="article:published_time" content="2017-07-16T03:28:38.000Z">
+<meta property="article:modified_time" content="2026-01-08T16:57:36.780Z">
+<meta property="article:author" content="Kang Yang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.ooxx.ooo/2018/07/17/1e5ccc40b38d25c14e9106e4a2f23ddd.gif">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>从View#setTranslationX/Y到自定义属性动画</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/11/23/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%88%B0%E6%89%8B%E5%88%9D%E4%BD%93%E9%AA%8C/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2017/07/16/View-setTranslationX/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2017/07/16/View-setTranslationX/&text=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2017/07/16/View-setTranslationX/&is_video=false&description=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从View#setTranslationX/Y到自定义属性动画&body=Check out this article: http://codeideal.com/2017/07/16/View-setTranslationX/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2017/07/16/View-setTranslationX/&name=从View#setTranslationX/Y到自定义属性动画&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E5%8A%A8%E7%94%BB%E7%AE%80%E5%8D%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">属性动画简单源码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7%E5%8A%A8%E7%94%BB"><span class="toc-number">2.</span> <span class="toc-text">自定义属性动画</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        从View#setTranslationX/Y到自定义属性动画
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">CodeIdeal</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2017-07-16T03:28:38.000Z" itemprop="datePublished">2017-07-16</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="属性动画简单源码解析"><a href="#属性动画简单源码解析" class="headerlink" title="属性动画简单源码解析"></a>属性动画简单源码解析</h2><p>在Android Reference中的定义</p>
+<blockquote>
+<p>Sets the vertical&#x2F;horizontal location of this view relative to its top&#x2F;left position. This effectively positions the object post-layout, in addition to wherever the object’s layout placed it.</p>
+</blockquote>
+<p>设置此视图相对于其左侧位置的水平位置。 除了View自身的Layout之外，这有效地定位了在Layout后的View。</p>
+<p>那这个方法有什么用处呢？我们都知道在属性动画中也有一对transationX&#x2F;Y,在属性动画中做X&#x2F;Y方向上的平移动画时是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(btn,<span class="string">&quot;translationX/Y&quot;</span>,<span class="number">0f</span>,<span class="number">200f</span>);</span><br><span class="line">objectAnimator.setDuration(<span class="number">1000</span>);</span><br><span class="line">objectAnimator.start();</span><br></pre></td></tr></table></figure>
+
+<p>我们从Android源码来看看，动画的每一帧的位置是如何确定的：</p>
+<p>首先我们在ObjectAnimation中找到这样一个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This method is called with the elapsed fraction of the animation during every</span></span><br><span class="line"><span class="comment"> * animation frame. This function turns the elapsed fraction into an interpolated fraction</span></span><br><span class="line"><span class="comment"> * and then into an animated value (from the evaluator. The function is called mostly during</span></span><br><span class="line"><span class="comment"> * animation updates, but it is also called when the &lt;code&gt;end()&lt;/code&gt;</span></span><br><span class="line"><span class="comment"> * function is called, to set the final value on the property.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;Overrides of this method must call the superclass to perform the calculation</span></span><br><span class="line"><span class="comment"> * of the animated value.&lt;/p&gt;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> fraction The elapsed fraction of the animation.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@CallSuper</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">animateValue</span><span class="params">(<span class="type">float</span> fraction)</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">Object</span> <span class="variable">target</span> <span class="operator">=</span> getTarget();</span><br><span class="line">    <span class="keyword">if</span> (mTarget != <span class="literal">null</span> &amp;&amp; target == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// We lost the target reference, cancel and clean up. Note: we allow null target if the</span></span><br><span class="line">        <span class="comment">/// target has never been set.</span></span><br><span class="line">        cancel();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">super</span>.animateValue(fraction);</span><br><span class="line">    <span class="type">int</span> <span class="variable">numValues</span> <span class="operator">=</span> mValues.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numValues; ++i) &#123;</span><br><span class="line">        mValues[i].setAnimatedValue(target);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过注释我们可以知道,这个方法在动画的每一帧被调用，将进度分数通过差值器转化为插值分数，最后再将分数转化为对应的属性动画的数值,再设置给对应的属性。</p>
+<p>再通过<code>mValues[i].setAnimatedValue(target);</code>跳转到下面的函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Internal function to set the value on the target object, using the setter set up</span></span><br><span class="line"><span class="comment">     * earlier on this PropertyValuesHolder object. This function is called by ObjectAnimator</span></span><br><span class="line"><span class="comment">     * to handle turning the value calculated by ValueAnimator into a value set on the object</span></span><br><span class="line"><span class="comment">     * according to the name of the property.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> target The target object on which the value is set</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setAnimatedValue</span><span class="params">(Object target)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mProperty != <span class="literal">null</span>) &#123;</span><br><span class="line">            mProperty.set(target, getAnimatedValue());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mSetter != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mTmpValueArray[<span class="number">0</span>] = getAnimatedValue();</span><br><span class="line">                mSetter.invoke(target, mTmpValueArray);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">                Log.e(<span class="string">&quot;PropertyValuesHolder&quot;</span>, e.toString());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                Log.e(<span class="string">&quot;PropertyValuesHolder&quot;</span>, e.toString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这是PropertyValuesHolder源码中一段核心的代码，他的主要目的即是，将计算出的当前帧的属性数值赋值到做动画的View中。<br>我们可以看到这里在拿到当前帧的数值后，通过反射调用mSetter将数值赋值给对应的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Utility function to get the setter from targetClass</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> targetClass The Class on which the requested method should exist.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">setupSetter</span><span class="params">(Class targetClass)</span> &#123;</span><br><span class="line">    Class&lt;?&gt; propertyType = mConverter == <span class="literal">null</span> ? mValueType : mConverter.getTargetType();</span><br><span class="line">    mSetter = setupSetterOrGetter(targetClass, sSetterPropertyMap, <span class="string">&quot;set&quot;</span>, propertyType);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么mSetter方法是怎么来的呢？我继续往下找,在一个<code>PropertyValuesHolder#setupSetter()</code>方法中找到了mSetter的赋值逻辑，而<code>setupSetter()</code>方法又是在<code>PropertyValuesHolder#setupSetterAndGetter()</code>中被调用的，<code>setupSetterAndGetter()</code>方法是在<code>ObjectAnimator#initAnimation()</code>中被调用的。</p>
+<p>那么也即是在属性动画的初始化方法中，我们就通过一系列的调用，最终在<code>setupSetter()</code>方法中拿到了设置对相应的属性值的方法对象.</p>
+<p>我们再看<code>setupSetter()</code>方法中，mSetter是通过一个<code>setupSetterOrGetter()</code>函数得到的,而且这里的入参<code>prefix</code>传入了一个”set”。</p>
+<p>我们先不管这个”set”是干嘛的，继续往下看：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the setter or getter requested. This utility function checks whether the</span></span><br><span class="line"><span class="comment"> * requested method exists in the propertyMapMap cache. If not, it calls another</span></span><br><span class="line"><span class="comment"> * utility function to request the Method from the targetClass directly.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> targetClass The Class on which the requested method should exist.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> propertyMapMap The cache of setters/getters derived so far.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> prefix &quot;set&quot; or &quot;get&quot;, for the setter or getter.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> valueType The type of parameter passed into the method (null for getter).</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Method the method associated with mPropertyName.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> Method <span class="title function_">setupSetterOrGetter</span><span class="params">(Class targetClass,</span></span><br><span class="line"><span class="params">        HashMap&lt;Class, HashMap&lt;String, Method&gt;&gt; propertyMapMap,</span></span><br><span class="line"><span class="params">        String prefix, Class valueType)</span> &#123;</span><br><span class="line">    <span class="type">Method</span> <span class="variable">setterOrGetter</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">synchronized</span>(propertyMapMap) &#123;</span><br><span class="line">        <span class="comment">// Have to lock property map prior to reading it, to guard against</span></span><br><span class="line">        <span class="comment">// another thread putting something in there after we&#x27;ve checked it</span></span><br><span class="line">        <span class="comment">// but before we&#x27;ve added an entry to it</span></span><br><span class="line">        HashMap&lt;String, Method&gt; propertyMap = propertyMapMap.get(targetClass);</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">wasInMap</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (propertyMap != <span class="literal">null</span>) &#123;</span><br><span class="line">            wasInMap = propertyMap.containsKey(mPropertyName);</span><br><span class="line">            <span class="keyword">if</span> (wasInMap) &#123;</span><br><span class="line">                setterOrGetter = propertyMap.get(mPropertyName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!wasInMap) &#123;</span><br><span class="line">            setterOrGetter = getPropertyFunction(targetClass, prefix, valueType);</span><br><span class="line">            <span class="keyword">if</span> (propertyMap == <span class="literal">null</span>) &#123;</span><br><span class="line">                propertyMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Method&gt;();</span><br><span class="line">                propertyMapMap.put(targetClass, propertyMap);</span><br><span class="line">            &#125;</span><br><span class="line">            propertyMap.put(mPropertyName, setterOrGetter);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setterOrGetter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个方法中，首先在<code>propertyMap</code>中去找之前的缓存，如果没有就通过<code>getPropertyFunction()</code>方法得到Method对象，并将其放入<code>propertyMap</code>缓存中。</p>
+<p>得，继续看<code>getPropertyFunction()</code>这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Determine the setter or getter function using the JavaBeans convention of setFoo or</span></span><br><span class="line"><span class="comment"> * getFoo for a property named &#x27;foo&#x27;. This function figures out what the name of the</span></span><br><span class="line"><span class="comment"> * function should be and uses reflection to find the Method with that name on the</span></span><br><span class="line"><span class="comment"> * target object.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> targetClass The class to search for the method</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> prefix &quot;set&quot; or &quot;get&quot;, depending on whether we need a setter or getter.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> valueType The type of the parameter (in the case of a setter). This type</span></span><br><span class="line"><span class="comment"> * is derived from the values set on this PropertyValuesHolder. This type is used as</span></span><br><span class="line"><span class="comment"> * a first guess at the parameter type, but we check for methods with several different</span></span><br><span class="line"><span class="comment"> * types to avoid problems with slight mis-matches between supplied values and actual</span></span><br><span class="line"><span class="comment"> * value types used on the setter.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> Method the method associated with mPropertyName.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> Method <span class="title function_">getPropertyFunction</span><span class="params">(Class targetClass, String prefix, Class valueType)</span> &#123;</span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> faster implementation...</span></span><br><span class="line">    <span class="type">Method</span> <span class="variable">returnVal</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">String</span> <span class="variable">methodName</span> <span class="operator">=</span> getMethodName(prefix, mPropertyName);</span><br><span class="line">    Class args[] = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (valueType == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            returnVal = targetClass.getMethod(methodName, args);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">            <span class="comment">// Swallow the error, log it later</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        args = <span class="keyword">new</span> <span class="title class_">Class</span>[<span class="number">1</span>];</span><br><span class="line">        Class typeVariants[];</span><br><span class="line">        <span class="keyword">if</span> (valueType.equals(Float.class)) &#123;</span><br><span class="line">            typeVariants = FLOAT_VARIANTS;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (valueType.equals(Integer.class)) &#123;</span><br><span class="line">            typeVariants = INTEGER_VARIANTS;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (valueType.equals(Double.class)) &#123;</span><br><span class="line">            typeVariants = DOUBLE_VARIANTS;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            typeVariants = <span class="keyword">new</span> <span class="title class_">Class</span>[<span class="number">1</span>];</span><br><span class="line">            typeVariants[<span class="number">0</span>] = valueType;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Class typeVariant : typeVariants) &#123;</span><br><span class="line">            args[<span class="number">0</span>] = typeVariant;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                returnVal = targetClass.getMethod(methodName, args);</span><br><span class="line">                <span class="keyword">if</span> (mConverter == <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="comment">// change the value type to suit</span></span><br><span class="line">                    mValueType = typeVariant;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> returnVal;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">                <span class="comment">// Swallow the error and keep trying other variants</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// If we got here, then no appropriate function was found</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (returnVal == <span class="literal">null</span>) &#123;</span><br><span class="line">        Log.w(<span class="string">&quot;PropertyValuesHolder&quot;</span>, <span class="string">&quot;Method &quot;</span> +</span><br><span class="line">                getMethodName(prefix, mPropertyName) + <span class="string">&quot;() with type &quot;</span> + valueType +</span><br><span class="line">                <span class="string">&quot; not found on target class &quot;</span> + targetClass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> returnVal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们先看看注释：</p>
+<blockquote>
+<p>JavaBeans约定：名为foo的属性对应setFoo或getFoo这样两个设置和获取属性的方法，用这样的约定来确定setter或getter函数。<br>此函数指出函数的名称应该是什么，并使用反射在目标对象上查找具有该名称的Method。</p>
+</blockquote>
+<p>再看其中的逻辑</p>
+<p>其中的<code>getMethodName()</code>方法,将属性名的第一位字母大写，然后在前面拼上<code>prefix</code>前缀，得到最后的符合JavaBeans约定的驼峰方法名，即方法名一定是setXxx()。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> String <span class="title function_">getMethodName</span><span class="params">(String prefix, String propertyName)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (propertyName == <span class="literal">null</span> || propertyName.length() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// shouldn&#x27;t get here</span></span><br><span class="line">        <span class="keyword">return</span> prefix;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">char</span> <span class="variable">firstLetter</span> <span class="operator">=</span> Character.toUpperCase(propertyName.charAt(<span class="number">0</span>));</span><br><span class="line">    <span class="type">String</span> <span class="variable">theRest</span> <span class="operator">=</span> propertyName.substring(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> prefix + firstLetter + theRest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而真正的获取方法对象的逻辑中，通过顺序匹配数值类型来解决了传入的数值类型不匹配的问题。</p>
+<p>最后通过<code>Class.getMethod(methodName, args)</code>方法找到对应的方法对象。其中args是只有一个元素的class数组，所以我们知道ObjectAnimator支持的set方法只能有一个参数。</p>
+<h2 id="自定义属性动画"><a href="#自定义属性动画" class="headerlink" title="自定义属性动画"></a>自定义属性动画</h2><p>首先新建一个继承自TextView的自定义View, 并提添加一个setXxx的方法，这里我们设置一个给文字设置颜色的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setColor</span><span class="params">(<span class="meta">@ColorInt</span> <span class="type">int</span> value)</span>&#123;</span><br><span class="line">    setTextColor(value);</span><br><span class="line">    postInvalidate();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在MainActivity中设置自定义的属性动画：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span>[] colors;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> 赤 = Color.rgb(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> 橙 = Color.rgb(<span class="number">255</span>, <span class="number">165</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> 黄 = Color.rgb(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> 绿 = Color.rgb(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> 青 = Color.rgb(<span class="number">0</span>, <span class="number">127</span>, <span class="number">255</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> 蓝 = Color.rgb(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> 紫 = Color.rgb(<span class="number">139</span>, <span class="number">0</span>,<span class="number">255</span>);</span><br><span class="line"></span><br><span class="line">        colors = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;赤, 橙, 黄, 绿, 青, 蓝, 紫&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    <span class="type">ObjectAnimator</span> <span class="variable">objectAnimator</span> <span class="operator">=</span> ObjectAnimator.ofInt(text,<span class="string">&quot;color&quot;</span>,colors);</span><br><span class="line">    objectAnimator.setRepeatCount(ValueAnimator.INFINITE);</span><br><span class="line">    objectAnimator.setRepeatMode(ValueAnimator.REVERSE);</span><br><span class="line">    objectAnimator.setDuration(<span class="number">1000</span>);</span><br><span class="line">    objectAnimator.setEvaluator(<span class="keyword">new</span> <span class="title class_">ArgbEvaluator</span>());</span><br><span class="line">    objectAnimator.start();</span><br></pre></td></tr></table></figure>
+<p>这里我们用了一个<code>ArgbEvaluator</code>估值器，他是<code>TypeEvaluator</code>接口的实现类，专为ARGB颜色计算过渡值。</p>
+<p>实现的效果如下:</p>
+<p><img src="https://i.ooxx.ooo/2018/07/17/1e5ccc40b38d25c14e9106e4a2f23ddd.gif"></p>
+
+  </div>
+</article>
+<div id="donate" class="donate">
+    <a id="github" href="https://github.com/codeideal" target="_blank" class="pos-f tr3" title="Github"></a>
+    <div id="DonateText" class="tr3">Donate</div>
+    <ul id="donateBox" class="list pos-f tr3">
+        <li id="PayPal">
+            <a href="https://www.paypal.me/Codeideal" target="_blank">PayPal</a>
+        </li>
+        <li id="BTC" data-footnote="Copy addres and show QRCode">
+            <button id="BTCBn" data-clipboard-target="#btc-key" alt="Copy to clipboard">Bitcoin</button>
+        </li>
+        <li id="AliPay">AliPay</li>
+        <li id="WeChat">WeChat</li>
+    </ul>
+    <div id="QRBox" class="pos-f left-100">
+        <div id="BTCQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/5d91e9892cecfcf56bfca5e9d399e7bc.png)"></div>
+        <div id="AliPayQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/67e67665f64367d782dfe5a95101779f.png)"></div>
+        <div id="WeChatQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/262a0f87e93bbb37276ed72a5dece671.png)"></div>
+    </div>
+    <!-- Bitcoin 账号 -->
+    <input id="btc-key" type="text" value="There is no bitcoin wallet yet." readonly="readonly">
+</div>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E5%8A%A8%E7%94%BB%E7%AE%80%E5%8D%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">属性动画简单源码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7%E5%8A%A8%E7%94%BB"><span class="toc-number">2.</span> <span class="toc-text">自定义属性动画</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2017/07/16/View-setTranslationX/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2017/07/16/View-setTranslationX/&text=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2017/07/16/View-setTranslationX/&is_video=false&description=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从View#setTranslationX/Y到自定义属性动画&body=Check out this article: http://codeideal.com/2017/07/16/View-setTranslationX/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2017/07/16/View-setTranslationX/&title=从View#setTranslationX/Y到自定义属性动画"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2017/07/16/View-setTranslationX/&name=从View#setTranslationX/Y到自定义属性动画&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2026 Kang Yang <a href="/LoveStory"><i class="fa fa-heart"></i></a>
+    <br/>
+    ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2026000344号</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-110925633-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'codeideal';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="从零开始用Jenkins做Android开发CI系统[TOC] 1. 什么是持续集成(CI)说到持续集成(Continuous Integration)，就不得不提到相关的持续交付(Continuous Delivery)和持续部署(Continuous Deployment)。 要区分和理解这三者的关系，简单的概括成一下三点：  持续集成（Continuous Integration）指的是，频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始Android Jenkins持续集成">
+<meta property="og:url" content="http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/index.html">
+<meta property="og:site_name" content="CodeIdeal">
+<meta property="og:description" content="从零开始用Jenkins做Android开发CI系统[TOC] 1. 什么是持续集成(CI)说到持续集成(Continuous Integration)，就不得不提到相关的持续交付(Continuous Delivery)和持续部署(Continuous Deployment)。 要区分和理解这三者的关系，简单的概括成一下三点：  持续集成（Continuous Integration）指的是，频">
+<meta property="og:locale">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm775l3tybj20m80d90ti">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm78cm6uvxj20oi0diaas">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afely1fm7a26u7jhj20ri0ivtaf">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm7a84yy2pj20qe0enaco">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm7af82dd4j20rm0fbq54">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm7algkh6jj20rw0cfjsd">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afely1fm7au9onrcj216e0f23z5">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm7b2f8garj216707it8t">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm80b9hdetj213b09vt99">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm80ezjg81j216u0azjsi">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm80g4epgvj21h509cq40">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm80l8ujpgj21h40asq3k">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm80wskag9j216e0bgaaf">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm817bspsrj21430lw761">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm81cdrvpfj21410jvabl">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm81ik2cz0j21400hc3zl">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm81u5wy6xj20n30ar74l">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm81rq6kunj21440dn0tq">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afely1fm81lfalfkj213z0kjq3w">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm822tsrcyj20zh0dljt7">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm82girj38j21gz0lj0va">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm8613gajrj214r03awef">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm881uo0hkj214908zq3j">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm86a6au6sj21430ls75e">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm885rlo1sj21490cat9i">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm887r0mlpj21gx0ef40g">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm888wfjndj21fu0co0tt">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm88mygqvnj21410bt3z7">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afely1fm88udbjmnj209l0buaao">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm88t8fhkzj21b40fgwgu">
+<meta property="article:published_time" content="2017-06-15T04:20:42.000Z">
+<meta property="article:modified_time" content="2026-01-08T16:57:36.781Z">
+<meta property="article:author" content="Kang Yang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/a15b4afegy1fm775l3tybj20m80d90ti">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>从零开始Android Jenkins持续集成</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/07/16/View-setTranslationX/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&text=从零开始Android Jenkins持续集成"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&is_video=false&description=从零开始Android Jenkins持续集成"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从零开始Android Jenkins持续集成&body=Check out this article: http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&name=从零开始Android Jenkins持续集成&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%94%A8Jenkins%E5%81%9AAndroid%E5%BC%80%E5%8F%91CI%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">从零开始用Jenkins做Android开发CI系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-CI"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是持续集成(CI)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AFJenkins"><span class="toc-number">1.2.</span> <span class="toc-text">2. 什么是Jenkins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85Jenkins"><span class="toc-number">1.3.</span> <span class="toc-text">3. 安装Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BD%BF%E7%94%A8war%E5%8C%85%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 使用war包安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BD%BF%E7%94%A8os%E8%87%AA%E8%BA%AB%E7%9A%84%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.2.</span> <span class="toc-text">3. 2 使用os自身的包管理器安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AEJenkins"><span class="toc-number">1.4.</span> <span class="toc-text">4 配置Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-jenkins%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 jenkins初始化配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Jenkins%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 Jenkins编译环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Jenkins%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93%E8%AF%81%E4%B9%A6%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 Jenkins代码仓库证书配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Jenkins%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 Jenkins项目配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%87%A0%E4%B8%AA%E5%A5%BD%E7%94%A8%E7%9A%84%E6%8F%92%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">5. 几个好用的插件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Git-Parameter"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 Git Parameter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Commit-Message-Trigger"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 Commit Message Trigger</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        从零开始Android Jenkins持续集成
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">CodeIdeal</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2017-06-15T04:20:42.000Z" itemprop="datePublished">2017-06-15</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="从零开始用Jenkins做Android开发CI系统"><a href="#从零开始用Jenkins做Android开发CI系统" class="headerlink" title="从零开始用Jenkins做Android开发CI系统"></a>从零开始用Jenkins做Android开发CI系统</h1><p>[TOC]</p>
+<h2 id="1-什么是持续集成-CI"><a href="#1-什么是持续集成-CI" class="headerlink" title="1. 什么是持续集成(CI)"></a>1. 什么是持续集成(CI)</h2><p>说到持续集成(Continuous Integration)，就不得不提到相关的持续交付(Continuous Delivery)和持续部署(Continuous Deployment)。</p>
+<p>要区分和理解这三者的关系，简单的概括成一下三点：</p>
+<ul>
+<li><p>持续集成（Continuous Integration）指的是，频繁地（一天多次）将代码集成到主干。<br>持续集成的目的，就是让产品可以快速迭代，同时还能保持高质量。<br>它的核心措施是，代码集成到主干之前，必须通过自动化测试。只要有一个测试用例失败，就不能集成。</p>
+</li>
+<li><p>持续交付（Continuous delivery）指的是，频繁地将软件的新版本，交付给质量团队或者用户，以供评审。如果评审通过，代码就进入生产阶段。<br>持续交付可以看作持续集成的下一步。它强调的是，不管怎么更新，软件是随时随地可以交付的。</p>
+</li>
+<li><p>持续部署（continuous deployment）是持续交付的下一步，指的是代码通过评审以后，自动部署到生产环境。</p>
+<p>持续部署的目标是，代码在任何时刻都是可部署的，可以进入生产阶段。</p>
+<p>持续部署的前提是能自动化完成测试、构建、部署等步骤。</p>
+</li>
+</ul>
+<p>他们在整个开发过程中的相互关系如下图：</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm775l3tybj20m80d90ti"></p>
+<h2 id="2-什么是Jenkins"><a href="#2-什么是Jenkins" class="headerlink" title="2. 什么是Jenkins"></a>2. 什么是Jenkins</h2><p>用<a href="https://jenkins.io/">Jenkins</a>官网的一句话来概括就是:</p>
+<blockquote>
+<p>Jenkins is a self-contained, open source automation server which can be used to automate all sorts of tasks related to building, testing, and delivering or deploying software.</p>
+<p>Jenkins can be installed through native system packages, Docker, or even run standalone by any machine with a Java Runtime Environment (JRE) installed.</p>
+</blockquote>
+<p>Jenkins是一个独立开源的自动化服务，可用于自动执行各种任务包括：构建、测试、交付或部署软件。</p>
+<p>Jenkins可以通过系统软件包或Docker来安装，甚至可以通过任何安装了Java运行时环境（JRE）的计算机独立运行。</p>
+<h2 id="3-安装Jenkins"><a href="#3-安装Jenkins" class="headerlink" title="3. 安装Jenkins"></a>3. 安装Jenkins</h2><p>以下各种操作都默认服务器环境为Centos7，代码仓库使用社区开源版GitLab</p>
+<h3 id="3-1-使用war包安装"><a href="#3-1-使用war包安装" class="headerlink" title="3.1 使用war包安装"></a>3.1 使用war包安装</h3><p>很多人都是直接从jenkins官网下载下来war包，用如下java命令行来运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar jenkins.war --httpPort=8080</span><br></pre></td></tr></table></figure>
+
+<p>这样是很方便，但是不便于后期管理，所以我们要利用好系统自身的包管理系统来安装jenkins。这样做有以下几点好处：</p>
+<ol>
+<li><p>可以使用系统本身的Systemd服务来管理jenkins服务状态<br>想要重启jenkins服务只需以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart jenkins</span><br></pre></td></tr></table></figure>
+
+<p>想要查看jenkins当前的运行状态只需以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl status jenkins</span><br></pre></td></tr></table></figure>
+
+<p>得到的Jenkins运行信息</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm78cm6uvxj20oi0diaas"></p>
+</li>
+<li><p>可以使用系统自身的包管理系统来安装、卸载、升级等等<br>例如想要升级Jenkins的话一行命令即可：<code>sudo yum update jenkins</code></p>
+</li>
+</ol>
+<h3 id="3-2-使用os自身的包管理器安装"><a href="#3-2-使用os自身的包管理器安装" class="headerlink" title="3. 2 使用os自身的包管理器安装"></a>3. 2 使用os自身的包管理器安装</h3><p>由于Jenkins不在centos的默认软件仓库中，所以我们要先将jenkins 源引入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br></pre></td></tr></table></figure>
+
+<p>再导入Jenkins源对应的密钥：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br></pre></td></tr></table></figure>
+
+<p>最后就可以用yum包管理器直接安装了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum install jenkins</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-配置Jenkins"><a href="#4-配置Jenkins" class="headerlink" title="4 配置Jenkins"></a>4 配置Jenkins</h2><h3 id="4-1-jenkins初始化配置"><a href="#4-1-jenkins初始化配置" class="headerlink" title="4.1 jenkins初始化配置"></a>4.1 jenkins初始化配置</h3><p>不管你是用war包安装，还是用包管理器安装，这时候你只要使用你服务器的ip或这DNS解析的域名加上默认端口8080，就可以看到如下页面了：</p>
+<p>如：<a href="http://www.example.com:8080/">http://www.example.com:8080</a></p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afely1fm7a26u7jhj20ri0ivtaf"></p>
+<p>这时候再到服务器上运行一下命令<code>cat /var/lib/jenkins/secrets/initialAdminPassword</code>拿到密钥填入passwd处顶点击continue，进入插件选择页</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm7a84yy2pj20qe0enaco"></p>
+<p>这里我们直接选择默认配置，以后有需求再慢慢安装其他插件。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm7af82dd4j20rm0fbq54"></p>
+<p>等走完上面的安装进度条我们就进到管理员账号设置页，设好管理员账号后我们就进入jenkins 的首页了。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm7algkh6jj20rw0cfjsd"></p>
+<h3 id="4-2-Jenkins编译环境配置"><a href="#4-2-Jenkins编译环境配置" class="headerlink" title="4.2 Jenkins编译环境配置"></a>4.2 Jenkins编译环境配置</h3><p>首先我们到jenkins的全局工具配置页 Manage Jenkins-&gt;Global Tool Configuration，如下图所示配好JDK和Gradle(注意版本要与Android项目用到的一样)，jenkins中使用的JDK强烈建议使用Oracle的JDK而不是OpenJDK，因为jenkins和OpenJDK有很多兼容性问题。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afely1fm7au9onrcj216e0f23z5"></p>
+<p>接着到jenkins的系统配置页 Manage Jenkins-&gt;Configure System，增加如下ANDROID_HOME的环境变量</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm7b2f8garj216707it8t"></p>
+<h3 id="4-3-Jenkins代码仓库证书配置"><a href="#4-3-Jenkins代码仓库证书配置" class="headerlink" title="4.3 Jenkins代码仓库证书配置"></a>4.3 Jenkins代码仓库证书配置</h3><p>这里我们使用的是开源的社区版GitLab仓库，而仔Jenkins的插件库中也有专门对接Gitlab的插件。</p>
+<p>首先我们到jenkins的插件管理页 Manage Jenkins-&gt;Plugin Manager，点击Available标签，搜索gitlab，并选中Gitlab Hook Plugin、 Gitlab Plugin 两个插件，点击安装。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm80b9hdetj213b09vt99"></p>
+<p>安装完毕，我们再到证书管理页，Credentials-&gt;System-&gt;Global credentials，如图：</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm80ezjg81j216u0azjsi"></p>
+<p>再点击添加证书(Add Credentials):</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm80g4epgvj21h509cq40"></p>
+<p>证书类型选择Gitlab API token，范围直接默认全局，再填入从gitlab中获取的API token，保存。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm80l8ujpgj21h40asq3k"></p>
+<p>接着我们再按照以上方式添加一个pull代码用的SSH key。</p>
+<p>最后我们再到jenkins的系统配置页 Manage Jenkins-&gt;Configure System，会发现多了一个Gitlab的栏目，填入相应的配置，Gitlab host URL填上Gitlab的url，如果没有绑定域名直接填上ip加端口号也可以，我这是是用的现成gitlab.com，证书选择我们刚刚设置的Gitlab API Token证书。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm80wskag9j216e0bgaaf"></p>
+<h3 id="4-4-Jenkins项目配置"><a href="#4-4-Jenkins项目配置" class="headerlink" title="4.4 Jenkins项目配置"></a>4.4 Jenkins项目配置</h3><p>接下来我们回到jenkins主页，新建一个Freestyle project 的项目，在GitLab connection处选择我们刚刚配置好的Gitlab API token，被我模糊的地方是后面要讲到的Git Parameter Plug-In插件的配置，这里先抹掉免得弄混淆了。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm817bspsrj21430lw761"></p>
+<p>再配置号代码仓库的url 和 ssh key证书，在构建分支指定栏中填入<code>origin/${gitlabSourceBranch}</code></p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm81cdrvpfj21410jvabl"></p>
+<p>在构建触发器中勾选Gitlab选项，并选择想要触发jenkins自动构建的条件，这里我选择了push事件和Accepted Merge Request事件。同时将此处的Gitlab CI Service URL 填入GitLab相应的Hook链接处。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm81ik2cz0j21400hc3zl"></p>
+<p>在构建选项中选择调用Gradle脚本(Invoke Gradle script)，并选择项目对应的Gradle版本号，填写Gradle构建的Task任务。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm81u5wy6xj20n30ar74l"></p>
+<p>最后在构建后动作(Post-build Actions)中选择<code>Archive the artifacts</code> 和 <code>Publish build status to GitLab commit</code>两项，归档文件中填入构建成功后Apk所在的位置，路径可以使用通配符。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm81rq6kunj21440dn0tq"></p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afely1fm81lfalfkj213z0kjq3w"></p>
+<p>其中第二项选选中后可以在Gitlab中看到每次触发构建的结果。如下图</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm822tsrcyj20zh0dljt7"></p>
+<p>最后点击保存，我们就可以在首页看到自己的项目了。</p>
+<p>这时候在Android Studio上做出修改并push到Gitlab，Gitlab就会通过Web Hook触发Jenkins进行自动构建，当Jenkins构建完成后又会调用Gitlab 的API反馈某一次构建的结果。如果构建成功，Jenkins还会自动把生成的Apk文件提取出来放到项目首页。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm82girj38j21gz0lj0va"></p>
+<h2 id="5-几个好用的插件"><a href="#5-几个好用的插件" class="headerlink" title="5. 几个好用的插件"></a>5. 几个好用的插件</h2><h3 id="5-1-Git-Parameter"><a href="#5-1-Git-Parameter" class="headerlink" title="5.1 Git Parameter"></a>5.1 Git Parameter</h3><p>当我们按照上面的方法配置完成后可以在项目的首页看到一个Build Now按钮，这时候点击是不会构建成功的，因为我们在指定构建分支时填了 需要Gitlab传递的分支参数 的路径<code>origin/${gitlabSourceBranch}</code>， 而此时再到项目首页点击Build Now按钮时，由于不是来自Gitlab的调用，无法把分支参数实例化，自然也就无法构建了。</p>
+<p>此时我们只要在Branches to build一栏下再增加一个默认的<code>*/master</code>分支，再点击Build Now，这时候Jenkins就会进行正常的构建了。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm8613gajrj214r03awef"></p>
+<p>可是如果我不想build master分支呢？我们平时开发肯定一般都会在dev分支或test分支上不断迭代开发，我们经常发版的分支肯定不会是master分支就是了。我们要在不同的分支上切换并进行构建的时候总不能每次都到配置里修改构建分支吧。</p>
+<p>所以就有了Git Parameter Plug-In这个插件，依然按照上面的方法在插件库中安装好插件。这时候再进到项目配置页，勾选参数化并添加Git Parameter，就会出现Git参数话配置。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm881uo0hkj214908zq3j"></p>
+<p>填写参数名，并在Parameter Type中选择Branch。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm86a6au6sj21430ls75e"></p>
+<p>然后在源码管理配置中增加构建分支参数<code>origin/$Branch</code> 。注意，此处的参数名应该和上面的Git Parameter Name一致。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm885rlo1sj21490cat9i"></p>
+<p>保存，并回到项目首页，我们可以看到之前的Build Now按钮已经变成了Build with Parameters。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm887r0mlpj21gx0ef40g"></p>
+<p>点击该按钮，就会进到分支选择页面，选中某一个分支，点击Build，即可开始对特定分支进行构建了。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm888wfjndj21fu0co0tt"></p>
+<h3 id="5-2-Commit-Message-Trigger"><a href="#5-2-Commit-Message-Trigger" class="headerlink" title="5.2 Commit Message Trigger"></a>5.2 Commit Message Trigger</h3><p>我们现在已经解决了push代码的时候自动构建项目和手动选择分支构建的问题，可是我们有时候向仓库push代码的时候不想让他自动构建怎么办呢？比如说，当一个完整的功能中写完了比较独立的公共部分，此时我们提交代码只是为了和协同开发的同事同步代码而已，并不需要触发构建。</p>
+<p>那有什么办法让jenkins知道我们是否真的想构建项目呢，这时候这个插件就能很好的解决这个问题了。</p>
+<p>依旧按上面的方法在插件库中找到Commit Message Trigger插件并安装。</p>
+<p>再次进入 项目配置，在Build Environment配置项中我们可以看到多了Enable Commit Message Trigger复选框。选中该项并填入自定义的KeyWord，如build(不区分大小写)。</p>
+<p>以后我们只要在commit message中包含<code>[ci keyword]</code>,Jenkins就能自动识别并构建项目了。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm88mygqvnj21410bt3z7"></p>
+<p>此时我们到Android Studio 中做出修改不在commit message中填写任何内容并push到仓库，发现Jenkins触发了构建，但是却很快就结束了，且状态显示为灰色的Not Build状态。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afely1fm88udbjmnj209l0buaao"></p>
+<p>我们打开这次构建的Console Output来瞧瞧，原来Commit Message Trigger插件没有在commit message中检测到<code>[ci build]</code>字符串，而自动跳过了构建步骤。</p>
+<p><img src="http://ww2.sinaimg.cn/large/a15b4afegy1fm88t8fhkzj21b40fgwgu"></p>
+<p>这时候我们再次修改项目，并在commit message 中添加<code>[ci build]</code>标记，push到仓库，就能看到Jenkins成功的构建了。</p>
+
+  </div>
+</article>
+<div id="donate" class="donate">
+    <a id="github" href="https://github.com/codeideal" target="_blank" class="pos-f tr3" title="Github"></a>
+    <div id="DonateText" class="tr3">Donate</div>
+    <ul id="donateBox" class="list pos-f tr3">
+        <li id="PayPal">
+            <a href="https://www.paypal.me/Codeideal" target="_blank">PayPal</a>
+        </li>
+        <li id="BTC" data-footnote="Copy addres and show QRCode">
+            <button id="BTCBn" data-clipboard-target="#btc-key" alt="Copy to clipboard">Bitcoin</button>
+        </li>
+        <li id="AliPay">AliPay</li>
+        <li id="WeChat">WeChat</li>
+    </ul>
+    <div id="QRBox" class="pos-f left-100">
+        <div id="BTCQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/5d91e9892cecfcf56bfca5e9d399e7bc.png)"></div>
+        <div id="AliPayQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/67e67665f64367d782dfe5a95101779f.png)"></div>
+        <div id="WeChatQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/262a0f87e93bbb37276ed72a5dece671.png)"></div>
+    </div>
+    <!-- Bitcoin 账号 -->
+    <input id="btc-key" type="text" value="There is no bitcoin wallet yet." readonly="readonly">
+</div>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%94%A8Jenkins%E5%81%9AAndroid%E5%BC%80%E5%8F%91CI%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">从零开始用Jenkins做Android开发CI系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-CI"><span class="toc-number">1.1.</span> <span class="toc-text">1. 什么是持续集成(CI)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AFJenkins"><span class="toc-number">1.2.</span> <span class="toc-text">2. 什么是Jenkins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85Jenkins"><span class="toc-number">1.3.</span> <span class="toc-text">3. 安装Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BD%BF%E7%94%A8war%E5%8C%85%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 使用war包安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BD%BF%E7%94%A8os%E8%87%AA%E8%BA%AB%E7%9A%84%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.2.</span> <span class="toc-text">3. 2 使用os自身的包管理器安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AEJenkins"><span class="toc-number">1.4.</span> <span class="toc-text">4 配置Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-jenkins%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 jenkins初始化配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Jenkins%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 Jenkins编译环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Jenkins%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93%E8%AF%81%E4%B9%A6%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 Jenkins代码仓库证书配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Jenkins%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 Jenkins项目配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%87%A0%E4%B8%AA%E5%A5%BD%E7%94%A8%E7%9A%84%E6%8F%92%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">5. 几个好用的插件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Git-Parameter"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 Git Parameter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Commit-Message-Trigger"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 Commit Message Trigger</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&text=从零开始Android Jenkins持续集成"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&is_video=false&description=从零开始Android Jenkins持续集成"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从零开始Android Jenkins持续集成&body=Check out this article: http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&title=从零开始Android Jenkins持续集成"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/&name=从零开始Android Jenkins持续集成&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2026 Kang Yang <a href="/LoveStory"><i class="fa fa-heart"></i></a>
+    <br/>
+    ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2026000344号</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-110925633-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'codeideal';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+

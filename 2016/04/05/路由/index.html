@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="路由 @app.route(‘&#x2F;‘(#路由地址), methods&#x3D;[‘GET’,’POST’] (#请求方法)]   123@app.route(&#x27;&#x2F;&#x27;, methods&#x3D;[&#x27;GET&#x27;])def home():    return &#x27;hello world&#x27;   固定路由地址结尾带&#39;&#x2F;&#39;和不带的区别：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask路由">
+<meta property="og:url" content="http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/index.html">
+<meta property="og:site_name" content="CodeIdeal">
+<meta property="og:description" content="路由 @app.route(‘&#x2F;‘(#路由地址), methods&#x3D;[‘GET’,’POST’] (#请求方法)]   123@app.route(&#x27;&#x2F;&#x27;, methods&#x3D;[&#x27;GET&#x27;])def home():    return &#x27;hello world&#x27;   固定路由地址结尾带&#39;&#x2F;&#39;和不带的区别：">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-04-05T02:02:24.000Z">
+<meta property="article:modified_time" content="2026-01-08T16:57:36.781Z">
+<meta property="article:author" content="Kang Yang">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>flask路由</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/05/15/%E4%B8%83%E7%89%9B%E4%BA%91%E5%9B%BE%E5%BA%8A%E4%B8%8A%E4%BC%A0%E8%84%9A%E6%9C%AC%E5%B7%A5%E5%85%B7/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/03/13/hello-world/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&text=flask路由"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&is_video=false&description=flask路由"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=flask路由&body=Check out this article: http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&name=flask路由&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1"><span class="toc-number">1.</span> <span class="toc-text">路由</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        flask路由
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">CodeIdeal</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-04-05T02:02:24.000Z" itemprop="datePublished">2016-04-05</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><ol>
+<li><p>@app.route(‘&#x2F;‘(<em>#路由地址</em>), methods&#x3D;[‘GET’,’POST’] (<em>#请求方法</em>)]  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">home</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hello world&#x27;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><p>固定路由地址结尾带<code>&#39;/&#39;</code>和不带的区别：  </p>
+<ol>
+<li><p>带<code>&#39;/&#39;</code>可以自动重定向不带<code>&#39;/&#39;</code>的url访问，比如：</p>
+<p>  <code>@app.route(&#39;/user/&#39;, methods=[&#39;GET&#39;])</code>就可以重定向<code>http://localhos/user</code>到<code>http://localhost/user/</code>从而保证同一个页面不会有两个路由的地址</p>
+</li>
+<li><p>不带<code>&#39;/&#39;</code>的路由地址不能解析带<code>&#39;/&#39;</code>的url访问，比如：</p>
+<p><code>@app.route(&#39;/user&#39;, methods=[&#39;GET&#39;])</code>不能解析<code>http://localhost/user/</code>这个url请求，只会返回404 not found错误</p>
+</li>
+</ol>
+</li>
+<li><p>动态路由地址</p>
+<ol>
+<li><p>路由地址可以用<code>&lt;&gt;</code>包围表示为一个动态的路由地址</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/hello/&lt;username&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_user_profile</span>(<span class="params">username</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;goodmorning %s&#x27;</span> % username</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>动态路由地址也可以通过转换器进行筛选过滤</p>
+<ul>
+<li><p>其规则为<code>&lt;converter:variable_name&gt;</code></p>
+</li>
+<li><p>converter有三种类型分别为：int、float、path(和默认的相似，但它能接受斜线)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/check/&lt;int:id&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_post</span>(<span class="params"><span class="built_in">id</span></span>):</span><br><span class="line">    <span class="comment"># if the id is enable or unable</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;success(or fialer) %d&#x27;</span> % post_id</span><br></pre></td></tr></table></figure>
+
+<p>如果访问了带有转换器筛选的路由地址，动态的内容不符合转换器的规则则会返回404 not found</p>
+<p>比如访问上面的路由地址，但是动态的部分不是int类型：<code>http://localhost/check/str</code></p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+
+  </div>
+</article>
+<div id="donate" class="donate">
+    <a id="github" href="https://github.com/codeideal" target="_blank" class="pos-f tr3" title="Github"></a>
+    <div id="DonateText" class="tr3">Donate</div>
+    <ul id="donateBox" class="list pos-f tr3">
+        <li id="PayPal">
+            <a href="https://www.paypal.me/Codeideal" target="_blank">PayPal</a>
+        </li>
+        <li id="BTC" data-footnote="Copy addres and show QRCode">
+            <button id="BTCBn" data-clipboard-target="#btc-key" alt="Copy to clipboard">Bitcoin</button>
+        </li>
+        <li id="AliPay">AliPay</li>
+        <li id="WeChat">WeChat</li>
+    </ul>
+    <div id="QRBox" class="pos-f left-100">
+        <div id="BTCQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/5d91e9892cecfcf56bfca5e9d399e7bc.png)"></div>
+        <div id="AliPayQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/67e67665f64367d782dfe5a95101779f.png)"></div>
+        <div id="WeChatQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/262a0f87e93bbb37276ed72a5dece671.png)"></div>
+    </div>
+    <!-- Bitcoin 账号 -->
+    <input id="btc-key" type="text" value="There is no bitcoin wallet yet." readonly="readonly">
+</div>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1"><span class="toc-number">1.</span> <span class="toc-text">路由</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&text=flask路由"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&is_video=false&description=flask路由"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=flask路由&body=Check out this article: http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&title=flask路由"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2016/04/05/%E8%B7%AF%E7%94%B1/&name=flask路由&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2026 Kang Yang <a href="/LoveStory"><i class="fa fa-heart"></i></a>
+    <br/>
+    ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2026000344号</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-110925633-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'codeideal';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+

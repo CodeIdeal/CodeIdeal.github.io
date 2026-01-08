@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="今天给大家介绍一个AOP框架，AspectJ。 AOP简介相信大家都很熟悉OOP(面向对象编程)，AOP即是与之相对的另一种编程思想，即面向切面编程。AOP一般是使用了预编译生成代理类，或者是运行时动态代理的技术，实现了在尽量保持原有业务代码不变的情况下增加一些业务无关的功能或逻辑。例如；日志记录，性能统计，安全控制，事务处理，异常处理等。 与OOP的关系按我们OOP单一职责原则思想进行设计，一般">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AOP框架AspectJ介绍及实战">
+<meta property="og:url" content="http://codeideal.com/2018/07/16/AspectJ/index.html">
+<meta property="og:site_name" content="CodeIdeal">
+<meta property="og:description" content="今天给大家介绍一个AOP框架，AspectJ。 AOP简介相信大家都很熟悉OOP(面向对象编程)，AOP即是与之相对的另一种编程思想，即面向切面编程。AOP一般是使用了预编译生成代理类，或者是运行时动态代理的技术，实现了在尽量保持原有业务代码不变的情况下增加一些业务无关的功能或逻辑。例如；日志记录，性能统计，安全控制，事务处理，异常处理等。 与OOP的关系按我们OOP单一职责原则思想进行设计，一般">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.ooxx.ooo/2018/07/11/1c2ff4e7570c93e931ee3d63a2b05432.png">
+<meta property="og:image" content="http://data.christianschenk.org/aop-with-aspectj/comparison.png">
+<meta property="article:published_time" content="2018-07-16T12:00:40.000Z">
+<meta property="article:modified_time" content="2026-01-08T16:57:36.780Z">
+<meta property="article:author" content="Kang Yang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.ooxx.ooo/2018/07/11/1c2ff4e7570c93e931ee3d63a2b05432.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>AOP框架AspectJ介绍及实战</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/09/28/Android_Fundamentals/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/07/14/Yunnan_Tour/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2018/07/16/AspectJ/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2018/07/16/AspectJ/&text=AOP框架AspectJ介绍及实战"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2018/07/16/AspectJ/&is_video=false&description=AOP框架AspectJ介绍及实战"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=AOP框架AspectJ介绍及实战&body=Check out this article: http://codeideal.com/2018/07/16/AspectJ/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2018/07/16/AspectJ/&name=AOP框架AspectJ介绍及实战&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AOP%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">AOP简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8EOOP%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.</span> <span class="toc-text">与OOP的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOP%E5%88%9D%E7%AA%A5"><span class="toc-number">3.</span> <span class="toc-text">AOP初窥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AspectJ%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80"><span class="toc-number">4.</span> <span class="toc-text">AspectJ语法基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Join-Point"><span class="toc-number">4.1.</span> <span class="toc-text">Join Point</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PointCut"><span class="toc-number">4.2.</span> <span class="toc-text">PointCut</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E7%82%B9PointCut"><span class="toc-number">4.2.1.</span> <span class="toc-text">连接点PointCut</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99"><span class="toc-number">4.2.2.</span> <span class="toc-text">匹配规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%9D%E5%A4%96%E7%9A%84%E5%8C%B9%E9%85%8D%E8%AF%AD%E6%B3%95"><span class="toc-number">4.2.3.</span> <span class="toc-text">额外的匹配语法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Advice"><span class="toc-number">4.3.</span> <span class="toc-text">Advice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%88%87%E9%9D%A2%E4%BE%8B%E5%AD%90"><span class="toc-number">4.4.</span> <span class="toc-text">一个切面例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%A6%82%E5%BF%B5"><span class="toc-number">4.5.</span> <span class="toc-text">其他概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AspectJ%E5%8E%9F%E7%90%86%E7%AE%80%E4%BB%8B-%E9%9D%99%E6%80%81%E7%BB%87%E5%85%A5"><span class="toc-number">5.</span> <span class="toc-text">AspectJ原理简介(静态织入)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8AspectJ%E5%86%99%E4%B8%AA%E5%B0%8F%E6%A1%86%E6%9E%B6"><span class="toc-number">6.</span> <span class="toc-text">用AspectJ写个小框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">7.</span> <span class="toc-text">写在最后</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        AOP框架AspectJ介绍及实战
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">CodeIdeal</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2018-07-16T12:00:40.000Z" itemprop="datePublished">2018-07-16</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>今天给大家介绍一个AOP框架，<a href="https://www.eclipse.org/aspectj/">AspectJ</a>。</p>
+<h2 id="AOP简介"><a href="#AOP简介" class="headerlink" title="AOP简介"></a>AOP简介</h2><p>相信大家都很熟悉OOP(面向对象编程)，AOP即是与之相对的另一种编程思想，即面向切面编程。AOP一般是使用了预编译生成代理类，或者是运行时动态代理的技术，实现了在尽量保持原有业务代码不变的情况下增加一些业务无关的功能或逻辑。例如；日志记录，性能统计，安全控制，事务处理，异常处理等。</p>
+<h2 id="与OOP的关系"><a href="#与OOP的关系" class="headerlink" title="与OOP的关系"></a>与OOP的关系</h2><p>按我们OOP单一职责原则思想进行设计，一般都会将这些模块封装成一个单一的类(比如Log)。而这种封装，虽然解决了代码的重用性，但还是没能解决这些模块的代码调用的重复分散且与业务代码耦合的现状。</p>
+<p>最原始逻辑 和 OOP封装后的逻辑::<br><img src="https://i.ooxx.ooo/2018/07/11/1c2ff4e7570c93e931ee3d63a2b05432.png"></p>
+<p>AOP与OOP并不是对立的，我们并不是为了代替OOP而提出AOP，AOP是OOP的延续和补充。当我们需要为分散的对象引入公共行为的时候，OOP则显得很无力，而AOP正是为解决这种问题而生的。</p>
+<p>AOP的目标就是把这些功能集中并隔离起来，放到一个统一的地方来控制和管理。如果说，OOP如果是把问题划分到单个模块的话，那么AOP就是把涉及到众多模块的某一类问题收集起来进行统一管理。</p>
+<p><img src="http://data.christianschenk.org/aop-with-aspectj/comparison.png"></p>
+<h2 id="AOP初窥"><a href="#AOP初窥" class="headerlink" title="AOP初窥"></a>AOP初窥</h2><p>AOP在我们Android开发中并不多见，但在后端开发中却是有着重要的地位，就拿著名的Spring框架来说，其背后核心的两个点就是IoC(控制反转,依赖注入)和AOP。</p>
+<p>我们来看个事务操作的例子。</p>
+<p>下面这个是原生Android操作SQLite数据库时，开启事务的一般流程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>  <span class="keyword">void</span>  <span class="title function_">batchSave</span><span class="params">(Data data)</span> &#123;</span><br><span class="line">    <span class="type">MySQLiteOpenHelper</span> <span class="variable">dbOpenHelper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MySQLiteOpenHelper</span>(context);</span><br><span class="line">    <span class="type">SQLiteDatabase</span> <span class="variable">db</span> <span class="operator">=</span> dbOpenHelper.getWritableDatabase();</span><br><span class="line">    <span class="comment">//开启事务</span></span><br><span class="line">    db.beginTransaction();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//数据库操作1</span></span><br><span class="line">        db.execSQL(<span class="string">&quot;SQL语句&quot;</span>, data);</span><br><span class="line">        <span class="comment">//数据库操作2</span></span><br><span class="line">        db.execSQL(<span class="string">&quot;SQL语句2&quot;</span>,data);</span><br><span class="line">        <span class="comment">//设置事务标志为成功，当结束事务时就会提交事务</span></span><br><span class="line">        db.setTransactionSuccessful();</span><br><span class="line">    &#125; <span class="keyword">catch</span>（Exception e）&#123;</span><br><span class="line">        <span class="keyword">throw</span>(e);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">//结束事务</span></span><br><span class="line">        db.endTransaction();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在Spring中开启数据库的事务是怎样的呢：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">@AutoWired</span></span><br><span class="line">DataMapper mapper;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">@Transaction</span></span><br><span class="line"><span class="keyword">public</span>  <span class="keyword">void</span>  <span class="title function_">batchSave</span><span class="params">(Data data)</span> &#123;</span><br><span class="line">    mapper.insert(data);</span><br><span class="line">    mapper.update(data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的例子我们看到，Spring把所有业务无关的代码全部都剔除了出去，只增加了两个注解。而这两个注解也正是Spring框架IoC和AOP核心两点的体现。必要的依赖通过了<code>@AutoWired</code>注解进行注入；事务开启、事务提交、异常处理和事务回滚等流程性的代码换成了一个 <code>@Transaction</code>注解。这里我们先不讲<code>@Transaction</code>的原理，在我们看完这篇AspectJ的介绍后你自然也就就知道Spring是怎么实现的了。</p>
+<h2 id="AspectJ语法基础"><a href="#AspectJ语法基础" class="headerlink" title="AspectJ语法基础"></a>AspectJ语法基础</h2><p>在介绍AspectJ之前我们先看下他的一些概念和术语：</p>
+<h3 id="Join-Point"><a href="#Join-Point" class="headerlink" title="Join Point"></a>Join Point</h3><p>Join Point: 连接点，程序中可切入的点，例如方法调用时、读取某个变量时。</p>
+<table>
+<thead>
+<tr>
+<th>Join Point</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Method call</td>
+<td>方法被调用</td>
+</tr>
+<tr>
+<td>Method execution</td>
+<td>方法执行</td>
+</tr>
+<tr>
+<td>Constructor call</td>
+<td>构造函数被调用</td>
+</tr>
+<tr>
+<td>Constructor execution</td>
+<td>构造函数执行</td>
+</tr>
+<tr>
+<td>Field get</td>
+<td>读取属性</td>
+</tr>
+<tr>
+<td>Field set</td>
+<td>写入属性</td>
+</tr>
+<tr>
+<td>Pre-initialization</td>
+<td>与构造函数有关，很少用到</td>
+</tr>
+<tr>
+<td>Initialization</td>
+<td>与构造函数有关，很少用到</td>
+</tr>
+<tr>
+<td>Static initialization</td>
+<td>static 块初始化</td>
+</tr>
+<tr>
+<td>Handler</td>
+<td>异常处理</td>
+</tr>
+<tr>
+<td>Advice execution</td>
+<td>所有 Advice 执行</td>
+</tr>
+</tbody></table>
+<h3 id="PointCut"><a href="#PointCut" class="headerlink" title="PointCut"></a>PointCut</h3><p>PointCut: 切点，代码注入的位置，其实就是有条件限定的特定Join Point，例如只在特定方法中注入代码。</p>
+<h4 id="连接点PointCut"><a href="#连接点PointCut" class="headerlink" title="连接点PointCut"></a>连接点PointCut</h4><p>与连接点相对应的切点的定义语法如下：</p>
+<table>
+<thead>
+<tr>
+<th>Join Point</th>
+<th>Pointcuts Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Method call</td>
+<td>call(MethodPattern)</td>
+</tr>
+<tr>
+<td>Method execution</td>
+<td>execution(MethodPattern)</td>
+</tr>
+<tr>
+<td>Constructor call</td>
+<td>call(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Constructor execution</td>
+<td>execution(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Field get</td>
+<td>get(FieldPattern)</td>
+</tr>
+<tr>
+<td>Field set</td>
+<td>set(FieldPattern)</td>
+</tr>
+<tr>
+<td>Pre-initialization</td>
+<td>initialization(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Initialization</td>
+<td>preinitialization(ConstructorPattern)</td>
+</tr>
+<tr>
+<td>Static initialization</td>
+<td>staticinitialization(TypePattern)</td>
+</tr>
+<tr>
+<td>Handler</td>
+<td>handler(TypePattern)</td>
+</tr>
+<tr>
+<td>Advice execution</td>
+<td>adviceexcution()</td>
+</tr>
+</tbody></table>
+<h4 id="匹配规则"><a href="#匹配规则" class="headerlink" title="匹配规则"></a>匹配规则</h4><p>上面的xxxPattern是这些java元素的匹配规则，具体的匹配规则如下：</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>规则</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MethodPattern</td>
+<td>[!] [@Annotation] [public,protected,private] [static] [final] 返回值类型 [类名.]方法名(参数类型列表) [throws 异常类型]</td>
+</tr>
+<tr>
+<td>ConstructorPattern</td>
+<td>[!] [@Annotation] [public,protected,private] [final] [类名.]new(参数类型列表) [throws 异常类型]</td>
+</tr>
+<tr>
+<td>FieldPattern</td>
+<td>[!] [@Annotation] [public,protected,private] [static] [final] 属性类型 [类名.]属性名</td>
+</tr>
+<tr>
+<td>TypePattern</td>
+<td>[!] [@Annotation] [public,protected,private] [static] [final] [包名.]类名</td>
+</tr>
+</tbody></table>
+<p>另外Pattern涉及到的类型规则还可以使用 <code>!</code>、<code>*</code>、<code>..</code>、<code>+</code>等。</p>
+<ul>
+<li><code>!</code> 表示取反，</li>
+<li><code>*</code> 匹配除 . 外的所有字符串，单独使用时表示匹配任意单个类型，</li>
+<li><code>..</code> 匹配任意字符串， 单独使用时表示匹配任意数量的任意类型，</li>
+<li><code>+</code> 匹配其自身及子类。</li>
+</ul>
+<h4 id="额外的匹配语法"><a href="#额外的匹配语法" class="headerlink" title="额外的匹配语法"></a>额外的匹配语法</h4><p>另外，在针对连接点的切点语法之外，还有一些额外的语法来筛选连接点。</p>
+<table>
+<thead>
+<tr>
+<th>Pointcuts syntax</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>within(指定类型)</td>
+<td>用于匹配指定类型内的方法执行</td>
+</tr>
+<tr>
+<td>this(当前类型)</td>
+<td>用于匹配当前AOP代理对象类型的执行方法</td>
+</tr>
+<tr>
+<td>target(目标类型)</td>
+<td>用于匹配当前目标对象类型的执行方法</td>
+</tr>
+<tr>
+<td>args(参数类型列表)</td>
+<td>用于匹配当前执行的方法传入的参数为指定类型的执行方法</td>
+</tr>
+<tr>
+<td>@within(注解类型)</td>
+<td>用于匹配所以持有指定注解类型内的方法</td>
+</tr>
+<tr>
+<td>@target(注解类型)</td>
+<td>用于匹配当前目标对象类型的执行方法，其中目标对象持有指定的注解</td>
+</tr>
+<tr>
+<td>@args(参数注解类型列表)</td>
+<td>用于匹配当前执行的方法传入的参数持有指定注解的执行</td>
+</tr>
+<tr>
+<td>@annotation(注解类型)</td>
+<td>用于匹配当前执行方法持有指定注解的方法</td>
+</tr>
+<tr>
+<td>*以上”类型”皆为 全限定名称 *</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><code>args()</code>、<code>this()</code>、<code>target()</code>、<code>@args()</code>、<code>@within()</code>、<code>@target()</code>和<code>@annotation()</code>这7个函数<strong>除了可以指定类名外，还可以指定参数名用于将目标对象连接点上的方法入参绑定到Advice的方法中</strong>。</p>
+<h3 id="Advice"><a href="#Advice" class="headerlink" title="Advice"></a>Advice</h3><p>Advice: 在切入点注入的代码，一般有 before、after、around 三种类型。</p>
+<table>
+<thead>
+<tr>
+<th>Advice</th>
+<th>执行时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@Before</td>
+<td>在执行 Join Point 之前</td>
+</tr>
+<tr>
+<td>@After</td>
+<td>在执行 Join Point 之后，包括正常的 return 和 throw 异常</td>
+</tr>
+<tr>
+<td>@AfterReturning</td>
+<td>Join Point 为方法调用且正常 return 时，不指定返回类型时匹配所有类型</td>
+</tr>
+<tr>
+<td>@AfterThrowing</td>
+<td>Join Point 为方法调用且抛出异常时，不指定异常类型时匹配所有类型</td>
+</tr>
+<tr>
+<td>@Around</td>
+<td>替代 Join Point 的代码，如果要执行原来代码的话，要使用 ProceedingJoinPoint.proceed()</td>
+</tr>
+</tbody></table>
+<h3 id="一个切面例子"><a href="#一个切面例子" class="headerlink" title="一个切面例子"></a>一个切面例子</h3><p>Pointcuts 可以定义在由<code>@Aspect</code>注解注释的class中定义，由 org.aspectj.lang.annotation.Pointcut 注解修饰的方法声明，方法返回值除 Around 的 Advice 外只能是 void。@Pointcut 修饰的方法只能由空的方法实现而且不能有 throws 语句，方法的参数和 pointcut 中绑定的参数相对应。</p>
+<p>eg:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AspectJ</span>&#123;</span><br><span class="line">    <span class="meta">@Before(&quot;execution(void android.view.View.OnClickListener+.onClick(..))  &amp;&amp; args(view)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">beforeOnClick</span><span class="params">(JoinPoint joinPoint, View view)</span> &#123;</span><br><span class="line">        Log.d(TAG,<span class="string">&quot;点击了View:&quot;</span>+view.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个切面匹配了所有OnClickListener接口及其子类(也就是我们自己的实现类)的onClick方法的执行前的时刻，并在onClick方法执行前打印日志。其中args(view)并不是在匹配参数，而是在将onClick(View view)方法中的参数<code>view</code>绑定到Before Advice方法中的<code>view</code>参数上。</p>
+<h3 id="其他概念"><a href="#其他概念" class="headerlink" title="其他概念"></a>其他概念</h3><ul>
+<li>Aspect: 切面，由PointCut和Advice组成，它包括了横切逻辑和注入代码的定义</li>
+<li>Target: 被一个或多个 aspect 横切拦截操作的目标对象。</li>
+<li>Weaving: 织入，在编译时把 Advice 代码插入到目标对象特定连接点的过程。</li>
+</ul>
+<h2 id="AspectJ原理简介-静态织入"><a href="#AspectJ原理简介-静态织入" class="headerlink" title="AspectJ原理简介(静态织入)"></a>AspectJ原理简介(静态织入)</h2><p>实操演示，展示反编译后的class代码，和源码的差别。</p>
+<h2 id="用AspectJ写个小框架"><a href="#用AspectJ写个小框架" class="headerlink" title="用AspectJ写个小框架"></a>用AspectJ写个小框架</h2><p>实操演示，从0开始写一个 权限校验申请 的小框架。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>给大家介绍这个AspectJ框架其实是想给大家分享一下AOP的思想，和OOP一样，它本身其实是一套方法论，也可以说成设计模式、思维方式、理论规则等等。分享给大家，也是希望大家在看待问题，解决问题的时候能有更多不同方向，不同的思维模式去思考。</p>
+<p>参考资料：<br><a href="https://www.eclipse.org/aspectj/doc/released/adk15notebook/index.html">The AspectJ<sup>TM</sup> 5 Development Kit Developer’s Notebook</a><br><a href="https://www.eclipse.org/aspectj/doc/released/progguide/index.html">The AspectJ<sup>TM</sup> Programming Guide</a><br><a href="https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx">Android-AspectJX</a></p>
+
+  </div>
+</article>
+<div id="donate" class="donate">
+    <a id="github" href="https://github.com/codeideal" target="_blank" class="pos-f tr3" title="Github"></a>
+    <div id="DonateText" class="tr3">Donate</div>
+    <ul id="donateBox" class="list pos-f tr3">
+        <li id="PayPal">
+            <a href="https://www.paypal.me/Codeideal" target="_blank">PayPal</a>
+        </li>
+        <li id="BTC" data-footnote="Copy addres and show QRCode">
+            <button id="BTCBn" data-clipboard-target="#btc-key" alt="Copy to clipboard">Bitcoin</button>
+        </li>
+        <li id="AliPay">AliPay</li>
+        <li id="WeChat">WeChat</li>
+    </ul>
+    <div id="QRBox" class="pos-f left-100">
+        <div id="BTCQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/5d91e9892cecfcf56bfca5e9d399e7bc.png)"></div>
+        <div id="AliPayQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/67e67665f64367d782dfe5a95101779f.png)"></div>
+        <div id="WeChatQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/262a0f87e93bbb37276ed72a5dece671.png)"></div>
+    </div>
+    <!-- Bitcoin 账号 -->
+    <input id="btc-key" type="text" value="There is no bitcoin wallet yet." readonly="readonly">
+</div>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AOP%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">AOP简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8EOOP%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.</span> <span class="toc-text">与OOP的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOP%E5%88%9D%E7%AA%A5"><span class="toc-number">3.</span> <span class="toc-text">AOP初窥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AspectJ%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80"><span class="toc-number">4.</span> <span class="toc-text">AspectJ语法基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Join-Point"><span class="toc-number">4.1.</span> <span class="toc-text">Join Point</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PointCut"><span class="toc-number">4.2.</span> <span class="toc-text">PointCut</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E7%82%B9PointCut"><span class="toc-number">4.2.1.</span> <span class="toc-text">连接点PointCut</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99"><span class="toc-number">4.2.2.</span> <span class="toc-text">匹配规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%9D%E5%A4%96%E7%9A%84%E5%8C%B9%E9%85%8D%E8%AF%AD%E6%B3%95"><span class="toc-number">4.2.3.</span> <span class="toc-text">额外的匹配语法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Advice"><span class="toc-number">4.3.</span> <span class="toc-text">Advice</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E5%88%87%E9%9D%A2%E4%BE%8B%E5%AD%90"><span class="toc-number">4.4.</span> <span class="toc-text">一个切面例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%A6%82%E5%BF%B5"><span class="toc-number">4.5.</span> <span class="toc-text">其他概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AspectJ%E5%8E%9F%E7%90%86%E7%AE%80%E4%BB%8B-%E9%9D%99%E6%80%81%E7%BB%87%E5%85%A5"><span class="toc-number">5.</span> <span class="toc-text">AspectJ原理简介(静态织入)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8AspectJ%E5%86%99%E4%B8%AA%E5%B0%8F%E6%A1%86%E6%9E%B6"><span class="toc-number">6.</span> <span class="toc-text">用AspectJ写个小框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">7.</span> <span class="toc-text">写在最后</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2018/07/16/AspectJ/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2018/07/16/AspectJ/&text=AOP框架AspectJ介绍及实战"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2018/07/16/AspectJ/&is_video=false&description=AOP框架AspectJ介绍及实战"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=AOP框架AspectJ介绍及实战&body=Check out this article: http://codeideal.com/2018/07/16/AspectJ/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2018/07/16/AspectJ/&title=AOP框架AspectJ介绍及实战"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2018/07/16/AspectJ/&name=AOP框架AspectJ介绍及实战&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2026 Kang Yang <a href="/LoveStory"><i class="fa fa-heart"></i></a>
+    <br/>
+    ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2026000344号</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-110925633-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'codeideal';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+

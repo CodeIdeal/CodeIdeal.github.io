@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="zxing二维码库 GitHub地址：https:&#x2F;&#x2F;github.com&#x2F;zxing&#x2F;zxing maven 地址：https:&#x2F;&#x2F;repo1.maven.org&#x2F;maven2&#x2F;com&#x2F;google&#x2F;zxing&#x2F; 概该库最开始是由Google 开源出来的，后来一直被各位大神维护至今  Android 项目需要用到的jar包 core.jar 是二维码解析及生成的核心类库  android-cor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zxing-QR二维码识别">
+<meta property="og:url" content="http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/index.html">
+<meta property="og:site_name" content="CodeIdeal">
+<meta property="og:description" content="zxing二维码库 GitHub地址：https:&#x2F;&#x2F;github.com&#x2F;zxing&#x2F;zxing maven 地址：https:&#x2F;&#x2F;repo1.maven.org&#x2F;maven2&#x2F;com&#x2F;google&#x2F;zxing&#x2F; 概该库最开始是由Google 开源出来的，后来一直被各位大神维护至今  Android 项目需要用到的jar包 core.jar 是二维码解析及生成的核心类库  android-cor">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-03-15T10:30:14.000Z">
+<meta property="article:modified_time" content="2026-01-08T16:57:36.781Z">
+<meta property="article:author" content="Kang Yang">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>zxing-QR二维码识别</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/06/15/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8BAndroid%20Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/01/03/Dagger2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&text=zxing-QR二维码识别"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&is_video=false&description=zxing-QR二维码识别"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=zxing-QR二维码识别&body=Check out this article: http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&name=zxing-QR二维码识别&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#zxing%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">zxing二维码库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-%E9%A1%B9%E7%9B%AE%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E7%9A%84jar%E5%8C%85"><span class="toc-number">1.1.</span> <span class="toc-text">Android 项目需要用到的jar包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E4%BA%8C%E7%BB%B4%E7%A0%81%E7%9B%B8%E5%85%B3"><span class="toc-number">1.3.</span> <span class="toc-text">生成二维码相关</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        zxing-QR二维码识别
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">CodeIdeal</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2017-03-15T10:30:14.000Z" itemprop="datePublished">2017-03-15</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="zxing二维码库"><a href="#zxing二维码库" class="headerlink" title="zxing二维码库"></a>zxing二维码库</h2><ul>
+<li>GitHub地址：<a href="https://github.com/zxing/zxing">https://github.com/zxing/zxing</a></li>
+<li>maven 地址：<a href="https://repo1.maven.org/maven2/com/google/zxing/">https://repo1.maven.org/maven2/com/google/zxing/</a></li>
+<li>概该库最开始是由Google 开源出来的，后来一直被各位大神维护至今</li>
+</ul>
+<h3 id="Android-项目需要用到的jar包"><a href="#Android-项目需要用到的jar包" class="headerlink" title="Android 项目需要用到的jar包"></a>Android 项目需要用到的jar包</h3><ul>
+<li><p>core.jar 是二维码解析及生成的核心类库</p>
+</li>
+<li><p>android-core.jar 提供了Android相关的相机配置工具类</p>
+</li>
+<li><p>glass 项目  提供了二维码扫描的界面activity</p>
+</li>
+</ul>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><ol>
+<li><p>surfaceView 获取相机预览 当手机为竖屏时预览图像方向旋转了90度，参见网络文章<a href="%E5%8F%82%E8%A7%81http://gold.xitu.io/entry/56aa36fad342d300542e7510">^1</a>：</p>
+<ul>
+<li>解决方法：在通过调用Camera 类中的camera.setDisplayOrientation(90)来使预览的相机湖面旋转90与手机屏幕坐标系吻合。</li>
+<li>原因：手机的屏幕坐标系和手机相机传感器的坐标系的差异导致的<ul>
+<li><p>屏幕方向：在Android系统中，屏幕的左上角是坐标系统的原点（0,0）坐标。原点向右延伸是X轴正方向，原点向下延伸是Y轴正方向。</p>
+</li>
+<li><p>相机传感器方向：手机相机的图像数据都是来自于摄像头硬件的图像传感器，这个传感器在被固定到手机上后有一个默认的取景方向，如下图2所示，坐标原点位于手机横放时的左上角，即与横屏应用的屏幕X方向一致。换句话说，与竖屏应用的屏幕X方向呈90度角。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>相机预览画面无法自动对焦</p>
+<ul>
+<li>原因：由于使用了CameraConfigurationUtils来配置camera相关的参数，没有把相机设置为自动对焦</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>解决方法：调用android-core.jar中的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CameraConfigurationUtils.setFocus(Camera.Parameters parameters,<span class="type">boolean</span> autoFocus, <span class="type">boolean</span> disableContinuous,<span class="type">boolean</span> safeMode)</span><br></pre></td></tr></table></figure>
+
+<p>方法，把第二个参数和第三个参数分别设置为true和false即可。</p>
+</li>
+</ul>
+<ol start="3">
+<li><p>相机资源的及时释放（在二维码扫面界面进入后台或手机直接锁屏的情况下为了减少不必要的界面渲染以及手机电量的耗费）</p>
+<ul>
+<li><p>解决方法：在该activity 的onpause 方法中及时释放 camera资源 以及相关实时解析逻辑的runnable任务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">onPause</span><span class="params">()</span> &#123;</span><br><span class="line">    result = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (decodeRunnable != <span class="literal">null</span>) &#123;</span><br><span class="line">      decodeRunnable.stop();</span><br><span class="line">      decodeRunnable = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (camera != <span class="literal">null</span>) &#123;</span><br><span class="line">      camera.stopPreview();</span><br><span class="line">      camera.release();</span><br><span class="line">      camera = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (holderWithCallback != <span class="literal">null</span>) &#123;</span><br><span class="line">      holderWithCallback.removeCallback(<span class="built_in">this</span>);</span><br><span class="line">      holderWithCallback = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">super</span>.onPause();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>二维码很难扫描出结果</p>
+<ul>
+<li><p>原因：想当然的认为 二维码的识别区域是整个camera的预览区域，不知到zxing库中把camera预览区域分为了信息采集区域和额外区域(详见zxing 二维码解析 预览画面的byte数组 的具体代码):、</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">subtendedWidth</span> <span class="operator">=</span> width / CameraConfigurationManager.ZOOM;</span><br><span class="line"><span class="type">int</span> <span class="variable">subtendedHeight</span> <span class="operator">=</span> height / CameraConfigurationManager.ZOOM;</span><br><span class="line"><span class="type">int</span> <span class="variable">excessWidth</span> <span class="operator">=</span> width - subtendedWidth;</span><br><span class="line"><span class="type">int</span> <span class="variable">excessHeight</span> <span class="operator">=</span> height - subtendedHeight;</span><br></pre></td></tr></table></figure>
+
+<p>其中CameraConfigurationManager.ZOOM 是一个配置的参数，默认为2，那么在camera预览画面中只有 长宽均为Camera预览画面长宽的一半 的 中心区域才是真正的二维码信息采集区域！</p>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>解决办法：在整个预览画面前面加上一层遮罩用来提示 真正的二维码信息采集区域。</li>
+</ul>
+<h3 id="生成二维码相关"><a href="#生成二维码相关" class="headerlink" title="生成二维码相关"></a>生成二维码相关</h3><ol>
+<li><p>趁热写的 生成代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;EncodeHintType, Integer&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">config.put(EncodeHintType.MARGIN,<span class="number">1</span>);</span><br><span class="line"><span class="type">BitMatrix</span> <span class="variable">bitMatrix</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">QRCodeWriter</span>().encode(<span class="string">&quot;ahhahahaha&quot;</span>, BarcodeFormat.QR_CODE, QR_WIDTH, QR_HEIGHT,config);</span><br><span class="line"><span class="type">int</span>[] pixels = <span class="keyword">new</span> <span class="title class_">int</span>[QR_WIDTH * QR_H</span><br><span class="line"><span class="title function_">for</span> <span class="params">(<span class="type">int</span> y = <span class="number">0</span>; y &lt; <span class="number">39</span>; y++)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>; x &lt; <span class="number">39</span>; x++) &#123;</span><br><span class="line">        pixels[y * QR_WIDTH + x] = bitMatrix.get(x, y) ? <span class="number">0xff000000</span> : <span class="number">0xffffffff</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Bitmap</span> <span class="variable">bitmap</span> <span class="operator">=</span> Bitmap.createBitmap(QR_WIDTH, QR_HEIGHT, Bitmap.Config.ARGB_8888);</span><br><span class="line">bitmap.setPixels(pixels,<span class="number">0</span>,QR_WIDTH,<span class="number">0</span>,<span class="number">0</span>,QR_WIDTH,QR_HEIGHT);</span><br><span class="line"><span class="type">Matrix</span> <span class="variable">matrix</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Matrix</span>();</span><br><span class="line">matrix.setScale(<span class="number">10</span>,<span class="number">10</span>);</span><br><span class="line"><span class="type">Bitmap</span> <span class="variable">bitmap1</span> <span class="operator">=</span> Bitmap.createBitmap(bitmap, <span class="number">0</span>, <span class="number">0</span>, QR_WIDTH, QR_HEIGHT, matrix, <span class="literal">false</span>);</span><br><span class="line"><span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(appContext.getExternalCacheDir(),<span class="string">&quot;test.png&quot;</span>);</span><br><span class="line"><span class="type">BufferedOutputStream</span> <span class="variable">bos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(file));</span><br><span class="line">bitmap1.compress(Bitmap.CompressFormat.JPEG, <span class="number">100</span>, bos);</span><br><span class="line">bos.flush();</span><br><span class="line">bos.close();</span><br></pre></td></tr></table></figure>
+
+<p>其中</p>
+<ul>
+<li><code>new QRCodeWriter().encode(&quot;ahhahahaha&quot;, BarcodeFormat.QR_CODE, QR_WIDTH, QR_HEIGHT,config);</code>为生成二维码 原始 像素矩阵 的核心代码，是zxing库中的方法调用。</li>
+<li>两层for循环是用来从该矩阵变换为一维像素信息数组</li>
+<li>由于源始像素信息是单一点阵，如果直接拿来生成二维码图片则，会由于分辨率太小而看不清，甚至 无法扫描还原自然信息，所以需要通过Matrix缩放来增大图片大小。</li>
+</ul>
+<p>​</p>
+</li>
+</ol>
+
+  </div>
+</article>
+<div id="donate" class="donate">
+    <a id="github" href="https://github.com/codeideal" target="_blank" class="pos-f tr3" title="Github"></a>
+    <div id="DonateText" class="tr3">Donate</div>
+    <ul id="donateBox" class="list pos-f tr3">
+        <li id="PayPal">
+            <a href="https://www.paypal.me/Codeideal" target="_blank">PayPal</a>
+        </li>
+        <li id="BTC" data-footnote="Copy addres and show QRCode">
+            <button id="BTCBn" data-clipboard-target="#btc-key" alt="Copy to clipboard">Bitcoin</button>
+        </li>
+        <li id="AliPay">AliPay</li>
+        <li id="WeChat">WeChat</li>
+    </ul>
+    <div id="QRBox" class="pos-f left-100">
+        <div id="BTCQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/5d91e9892cecfcf56bfca5e9d399e7bc.png)"></div>
+        <div id="AliPayQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/67e67665f64367d782dfe5a95101779f.png)"></div>
+        <div id="WeChatQR" class="MainBox" style="background-image: url(https://i.ooxx.ooo/2018/07/18/262a0f87e93bbb37276ed72a5dece671.png)"></div>
+    </div>
+    <!-- Bitcoin 账号 -->
+    <input id="btc-key" type="text" value="There is no bitcoin wallet yet." readonly="readonly">
+</div>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#zxing%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">zxing二维码库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-%E9%A1%B9%E7%9B%AE%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E7%9A%84jar%E5%8C%85"><span class="toc-number">1.1.</span> <span class="toc-text">Android 项目需要用到的jar包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E4%BA%8C%E7%BB%B4%E7%A0%81%E7%9B%B8%E5%85%B3"><span class="toc-number">1.3.</span> <span class="toc-text">生成二维码相关</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&text=zxing-QR二维码识别"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&is_video=false&description=zxing-QR二维码识别"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=zxing-QR二维码识别&body=Check out this article: http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&title=zxing-QR二维码识别"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://codeideal.com/2017/03/15/zxing-QR%E4%BA%8C%E7%BB%B4%E7%A0%81%E8%AF%86%E5%88%AB/&name=zxing-QR二维码识别&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2026 Kang Yang <a href="/LoveStory"><i class="fa fa-heart"></i></a>
+    <br/>
+    ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2026000344号</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="http://github.com/codeideal">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-110925633-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'codeideal';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
