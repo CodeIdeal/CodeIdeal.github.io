@@ -8,28 +8,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '19.6.0'
-
-      - name: Set timezone
-        run: sudo timedatectl set-timezone Asia/Shanghai
-
-      - name: Install dependencies
-        run: |
-          yarn global add hexo-cli
-          yarn global add hexo-deployer-git
-          yarn install
-
-      - name: Build and deploy
-        run: |
-          hexo clean
-          hexo generate
-          git config --global user.name 'WorkFlow'
-          git config --global user.email 'worklow@github.com'
-          sed -i'' "s~git@github.com:~https://${{ secrets.GITHUB_TOKEN }}@github.com/~" _config.yml
-          hexo deploy
+      - name: Hexo Action
+        uses: sma11black/hexo-action@v1.0.4
