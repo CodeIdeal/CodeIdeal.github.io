@@ -29,7 +29,7 @@ jobs:
         run: |
           hexo clean
           hexo generate
-          git config --global user.name 'John Doe'
-          git config --global user.email 'foo@bar.com'
-          sed -i "/^ *repo/s~github\.com~${{ secrets.GITHUB_TOKEN }}@github.com~" _config.yml
+          git config --global user.name 'WorkFlow'
+          git config --global user.email 'worklow@github.com'
+          sed -i'' "s~git@github.com:~https://${{ secrets.GITHUB_TOKEN }}@github.com/~" _config.yml
           hexo deploy
