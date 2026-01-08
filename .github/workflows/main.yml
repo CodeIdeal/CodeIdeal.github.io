@@ -53,4 +53,5 @@ jobs:
         if: github.ref == 'refs/heads/deploy'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: your-branch
           publish_dir: ./public
