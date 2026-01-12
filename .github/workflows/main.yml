@@ -44,3 +44,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: master
           publish_dir: ./public
+      - name: request webhook
+        run: curl https://webhook.cabana.tech/hooks/github-page-webhook
