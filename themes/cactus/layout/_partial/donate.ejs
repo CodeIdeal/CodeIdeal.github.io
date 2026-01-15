@@ -5,8 +5,8 @@
         <li id="PayPal">
             <a href="<%= theme.donate.paypal %>" target="_blank">PayPal</a>
         </li>
-        <li id="BTC" data-footnote="Copy addres and show QRCode">
-            <button id="BTCBn" data-clipboard-target="#btc-key" alt="Copy to clipboard">Bitcoin</button>
+        <li id="Solana">
+            <a href="<%= theme.donate.solana %>" target="_blank">Solana</a>
         </li>
         <li id="AliPay">AliPay</li>
         <li id="WeChat">WeChat</li>
@@ -16,6 +16,4 @@
         <div id="AliPayQR" class="MainBox" style="background-image: url(<%= theme.donate.AliPayQR %>)"></div>
         <div id="WeChatQR" class="MainBox" style="background-image: url(<%= theme.donate.WeChatQR %>)"></div>
     </div>
-    <!-- Bitcoin 账号 -->
-    <input id="btc-key" type="text" value="<%= theme.donate.bitcoin %>" readonly="readonly">
 </div>
